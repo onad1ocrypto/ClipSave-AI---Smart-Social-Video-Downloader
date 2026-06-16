@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ClipSave AI - V4</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;color:white;overflow-x:hidden;
+  background:
+  radial-gradient(circle at 10% 10%,rgba(124,58,237,.42),transparent 30%),
+  radial-gradient(circle at 90% 20%,rgba(6,182,212,.30),transparent 28%),
+  linear-gradient(135deg,#050816,#020617 55%,#061826);
+  transition:.35s;
+}
+body.light{
+  color:#0f172a;
+  background:
+  radial-gradient(circle at 10% 10%,rgba(124,58,237,.18),transparent 30%),
+  radial-gradient(circle at 90% 20%,rgba(6,182,212,.18),transparent 28%),
+  linear-gradient(135deg,#f8fafc,#e0f2fe);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:46px 46px;
+}
+body.light::before{
+  background-image:
+  linear-gradient(rgba(15,23,42,.05) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(15,23,42,.05) 1px,transparent 1px);
+}
+.donation-bar{
+  width:100%;text-align:center;padding:12px 20px;
+  background:linear-gradient(90deg,#f59e0b,#f97316);
+  color:white;font-weight:900;font-size:15px;
+  position:sticky;top:0;z-index:9999;
+  box-shadow:0 4px 20px rgba(0,0,0,.25)
+}
+.donation-bar a{
+  color:white;text-decoration:none;margin-left:8px;
+  padding:6px 12px;border-radius:999px;
+  background:rgba(255,255,255,.22)
+}
+.particles span{
+  position:fixed;width:6px;height:6px;border-radius:50%;
+  background:#67e8f9;opacity:.25;z-index:1;
+  animation:floatParticle 12s infinite linear;
+}
+@keyframes floatParticle{
+  from{transform:translateY(110vh) scale(.6)}
+  to{transform:translateY(-10vh) scale(1.3)}
+}
+.floatIcon{
+  position:fixed;z-index:1;font-size:34px;opacity:.22;
+  animation:floatIcon 6s infinite ease-in-out alternate;
+}
+.fi1{left:5%;top:22%}.fi2{right:8%;top:30%;animation-delay:1s}.fi3{left:12%;bottom:18%;animation-delay:2s}
+@keyframes floatIcon{from{transform:translateY(0) rotate(-8deg)}to{transform:translateY(28px) rotate(8deg)}}
+
+.wrap{max-width:1220px;margin:auto;padding:26px;position:relative;z-index:2}
+nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:58px}
+.logo{display:flex;align-items:center;gap:10px;font-size:28px;font-weight:900}
+.logoIcon{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,#8b5cf6,#06b6d4,#f472b6);display:flex;align-items:center;justify-content:center}
+.logoText{background:linear-gradient(90deg,#a78bfa,#22d3ee,#f472b6);-webkit-background-clip:text;color:transparent}
+.navLinks{display:flex;align-items:center;gap:10px}
+.navLinks a{color:#cbd5e1;text-decoration:none;padding:10px 14px;border-radius:999px;font-size:14px}
+body.light .navLinks a{color:#334155}
+.navBtn,.languageSwitcher,.themeBtn{
+  padding:11px 16px;border-radius:999px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  color:white;font-weight:800;font-size:14px;cursor:pointer
+}
+body.light .navBtn,body.light .languageSwitcher,body.light .themeBtn{
+  background:rgba(15,23,42,.06);border-color:rgba(15,23,42,.14);color:#0f172a
+}
+.languageSwitcher{outline:none}
+.languageSwitcher option{background:#020617;color:white}
+
+.hero{display:grid;grid-template-columns:1.04fr .96fr;gap:44px;align-items:center;min-height:620px}
+.pill{width:max-content;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#d8b4fe;font-weight:800;margin-bottom:24px}
+h1{font-size:74px;line-height:.98;letter-spacing:-4px;margin-bottom:24px}
+h1 span{background:linear-gradient(90deg,#a78bfa,#67e8f9,#f9a8d4);-webkit-background-clip:text;color:transparent}
+.sub{color:#cbd5e1;font-size:20px;line-height:1.65;max-width:650px;margin-bottom:20px}
+body.light .sub,body.light .smallNote,body.light .sectionTitle p,body.light .feature p,body.light .footer,body.light .stat p{color:#475569}
+.trustRow{
+  display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px;color:#bae6fd;font-weight:800;font-size:14px
+}
+body.light .trustRow{color:#0369a1}
+.searchBox{
+  padding:16px;border-radius:30px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(22px)
+}
+body.light .searchBox,.bodyLightCard{background:rgba(255,255,255,.72);border-color:rgba(15,23,42,.1)}
+.searchRow{display:flex;gap:12px}
+input{
+  flex:1;min-width:0;padding:20px 22px;border-radius:20px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#020617;color:white;font-size:16px;outline:none
+}
+body.light input{background:white;color:#0f172a;border-color:#cbd5e1}
+button{
+  border:0;border-radius:20px;padding:20px 26px;
+  background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+  color:white;font-size:16px;font-weight:900;cursor:pointer;
+  box-shadow:0 16px 42px rgba(6,182,212,.25)
+}
+button:hover{transform:translateY(-2px)}
+.secondaryBtn{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);box-shadow:none}
+body.light .secondaryBtn{background:rgba(15,23,42,.08);color:#0f172a}
+.smallNote{color:#94a3b8;font-size:13px;margin-top:13px;text-align:center}
+.heroActions{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+.platforms{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.platform{padding:10px 13px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#dbeafe;font-weight:800;font-size:13px}
+body.light .platform{background:white;color:#0f172a;border-color:#cbd5e1}
+
+.device,.stat,.result,.feature,.cta,.testimonial,.historyBox{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(18px)
+}
+body.light .device,body.light .stat,body.light .result,body.light .feature,body.light .cta,body.light .testimonial,body.light .historyBox{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(15,23,42,.1);
+}
+.device{border-radius:38px;padding:18px;box-shadow:0 35px 100px rgba(0,0,0,.55)}
+.deviceTop{display:flex;align-items:center;margin-bottom:14px}
+.dots{display:flex;gap:7px}.dot{width:10px;height:10px;border-radius:50%;background:#64748b}
+.urlBar{flex:1;margin-left:14px;padding:9px 12px;border-radius:999px;background:rgba(2,6,23,.65);color:#94a3b8;font-size:12px}
+body.light .urlBar{background:#f1f5f9;color:#334155}
+.previewVideo{
+  height:315px;border-radius:28px;position:relative;overflow:hidden;
+  background:
+  linear-gradient(135deg,rgba(124,58,237,.68),rgba(6,182,212,.56)),
+  radial-gradient(circle at 70% 22%,rgba(255,255,255,.5),transparent 14%);
+}
+.previewVideo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.55),transparent)
+}
+.playCircle{position:absolute;inset:0;margin:auto;width:86px;height:86px;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.38);display:flex;align-items:center;justify-content:center;font-size:36px;z-index:2}
+.videoLabel{position:absolute;left:18px;bottom:18px;right:18px;z-index:2}.videoLabel h3{font-size:22px;margin-bottom:6px}.videoLabel p{color:#dbeafe;font-size:13px}
+.processing{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.processCard{border-radius:20px;padding:14px;background:rgba(2,6,23,.58);border:1px solid rgba(255,255,255,.12)}
+body.light .processCard{background:#f8fafc;border-color:#cbd5e1}
+.processCard small{display:block;color:#94a3b8;margin-bottom:6px}
+.bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+body.light .bar{background:#e2e8f0}
+.bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#8b5cf6,#22d3ee)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:34px 0 64px}
+.stat{padding:26px 18px;text-align:center;border-radius:28px}
+.stat h3{font-size:34px;margin-bottom:6px;color:#a5f3fc}
+body.light .stat h3{color:#0284c7}
+.stat p{color:#94a3b8;font-size:14px}
+
+.loadingBox{display:none;margin:26px auto 0;max-width:720px;padding:22px;border-radius:26px;background:rgba(2,6,23,.78);border:1px solid rgba(255,255,255,.15)}
+body.light .loadingBox{background:white;color:#0f172a;border-color:#cbd5e1}
+.loadingStep{display:flex;align-items:center;gap:12px;margin:10px 0;color:#cbd5e1}
+body.light .loadingStep{color:#334155}
+.spinner{width:22px;height:22px;border:3px solid rgba(255,255,255,.2);border-top-color:#22d3ee;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.result{display:none;margin:10px auto 74px;padding:22px;border-radius:34px}
+.sectionTitle{text-align:center;margin-bottom:26px}.sectionTitle h2{font-size:42px;margin-bottom:10px}.sectionTitle p{color:#94a3b8}
+.videoCard{display:grid;grid-template-columns:350px 1fr;gap:24px}
+.thumb{min-height:250px;border-radius:28px;background:linear-gradient(135deg,rgba(124,58,237,.7),rgba(6,182,212,.62));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent)}
+.ready{position:absolute;top:16px;left:16px;padding:8px 12px;border-radius:999px;background:rgba(34,197,94,.22);border:1px solid rgba(34,197,94,.45);color:#bbf7d0;font-weight:900;font-size:13px;z-index:2}
+.bigPlay{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:34px;z-index:2}
+.info h2{font-size:32px;margin-bottom:10px}.info p{color:#cbd5e1;line-height:1.65;margin-bottom:18px}
+body.light .info p{color:#475569}
+.details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+.detail{padding:15px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11)}
+body.light .detail{background:#f8fafc;border-color:#cbd5e1}
+.detail small{display:block;color:#94a3b8;margin-bottom:6px}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:18px 0 34px}
+.feature{padding:28px;border-radius:30px;min-height:198px}
+.icon{width:48px;height:48px;border-radius:18px;background:rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:18px}
+body.light .icon{background:#e0f2fe}
+.feature h3{font-size:22px;margin-bottom:10px}.feature p{color:#cbd5e1;line-height:1.6;font-size:15px}
+
+.extraGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:46px 0}
+.historyBox,.testimonial{padding:26px;border-radius:30px}
+.historyItem{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#cbd5e1}
+body.light .historyItem{border-color:#e2e8f0;color:#334155}
+.testimonial p{color:#cbd5e1;line-height:1.6;margin-bottom:14px}
+body.light .testimonial p{color:#334155}
+.stars{color:#fbbf24;margin-bottom:10px}
+
+.cta{margin:70px 0 30px;text-align:center;padding:46px 26px;border-radius:34px}
+.cta h2{font-size:44px;margin-bottom:12px}.cta p{color:#cbd5e1;max-width:650px;margin:0 auto 22px;line-height:1.6}
+.footer{text-align:center;color:#94a3b8;font-size:13px;padding:34px 0 18px}
+
+.robot{
+  position:fixed;right:22px;bottom:22px;z-index:9999;
+  width:64px;height:64px;border-radius:22px;
+  background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;box-shadow:0 20px 50px rgba(0,0,0,.35);
+  cursor:pointer;animation:bob 2.4s infinite ease-in-out
+}
+.robotTip{
+  display:none;position:fixed;right:96px;bottom:34px;z-index:9999;
+  background:#020617;color:white;padding:12px 16px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.15);font-size:14px
+}
+.robot:hover+.robotTip{display:block}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.activity{
+  position:fixed;left:20px;bottom:20px;z-index:9999;
+  background:rgba(2,6,23,.9);border:1px solid rgba(255,255,255,.15);
+  color:white;padding:14px 18px;border-radius:18px;
+  box-shadow:0 18px 50px rgba(0,0,0,.35);
+  transform:translateY(120px);transition:.4s;font-size:14px
+}
+.activity.show{transform:translateY(0)}
+body.light .activity,body.light .robotTip{background:white;color:#0f172a;border-color:#cbd5e1}
+
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;min-height:auto}
+  h1{font-size:58px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .videoCard,.extraGrid{grid-template-columns:1fr}
+  .features{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:680px){
+  .wrap{padding:18px}.navLinks a,.navBtn{display:none}
+  nav{align-items:flex-start;gap:12px}
+  h1{font-size:43px;letter-spacing:-2px}.sub{font-size:17px}
+  .searchRow,.heroActions{flex-direction:column}
+  .stats,.details,.actions,.features{grid-template-columns:1fr}
+  button{width:100%}.languageSwitcher{max-width:170px}
+  .robotTip{display:none!important}.activity{left:12px;right:12px}
+}
+</style>
+</head>
+
+<body>
+<div class="donation-bar">
+  ☕ DONASI KOPI —
+  <a href="https://saweria.co/sasam" target="_blank">❤️ Traktir Kopi</a>
+</div>
+
+<div class="particles">
+  <span style="left:8%;animation-delay:0s"></span><span style="left:18%;animation-delay:2s"></span>
+  <span style="left:28%;animation-delay:4s"></span><span style="left:42%;animation-delay:1s"></span>
+  <span style="left:56%;animation-delay:3s"></span><span style="left:70%;animation-delay:5s"></span>
+  <span style="left:84%;animation-delay:2.5s"></span><span style="left:94%;animation-delay:4.5s"></span>
+</div>
+
+<div class="floatIcon fi1">🎵</div>
+<div class="floatIcon fi2">📸</div>
+<div class="floatIcon fi3">𝕏</div>
+
+<div class="wrap">
+<nav>
+  <div class="logo">
+    <div class="logoIcon">▶</div>
+    <div class="logoText">ClipSave AI</div>
+  </div>
+  <div class="navLinks">
+    <a href="#features" id="navFeatures">Features</a>
+    <a href="#demo" id="navDemo">Demo</a>
+    <select class="languageSwitcher" onchange="changeLanguage(this.value)">
+      <option value="en">🇺🇸 English</option>
+      <option value="id">🇮🇩 Indonesia</option>
+      <option value="jv">🇯🇼 Jawa</option>
+      <option value="krama">🇯🇼 Jawa Krama Halus</option>
+      <option value="su">🇮🇩 Sunda</option>
+      <option value="ngapak">🇮🇩 Jawa Ngapak</option>
+      <option value="aksara">ꦗꦮ Aksara Jawa</option>
+    </select>
+    <button class="themeBtn" onclick="toggleTheme()">🌙</button>
+    <div class="navBtn" id="navBtn">AI Creator Toolkit</div>
+  </div>
+</nav>
+
+<section class="hero" id="demo">
+  <div>
+    <div class="pill" id="pill">🚀 AI video downloader for modern creators</div>
+    <h1 id="heroTitle">Save, analyze & download <span>social videos</span></h1>
+    <p class="sub" id="heroSub">Paste your video link from TikTok, Instagram, X, Facebook, or YouTube. ClipSave AI helps you preview, analyze, and download videos faster.</p>
+
+    <div class="trustRow">
+      <span>⭐ 4.9/5 Rating</span><span>•</span><span>500K+ Creators</span><span>•</span><span>10M+ Videos</span>
+    </div>
+
+    <div class="searchBox">
+      <div class="searchRow">
+        <input id="videoLink" placeholder="Paste your video link here...">
+        <button id="analyzeBtn" onclick="analyzeVideo()">Analyze Video</button>
+      </div>
+      <div class="smallNote" id="note">Use only for videos you own or have permission to save.</div>
+    </div>
+
+    <div class="heroActions">
+      <button id="tryDemoBtn" onclick="tryDemo()">Try Demo Link</button>
+      <button id="viewFeaturesBtn" class="secondaryBtn" onclick="scrollToFeatures()">View Features</button>
+    </div>
+
+    <div class="platforms">
+      <div class="platform">TikTok</div><div class="platform">Instagram</div><div class="platform">X / Twitter</div>
+      <div class="platform">YouTube Shorts</div><div class="platform">Facebook</div><div class="platform">Pinterest</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="device">
+      <div class="deviceTop">
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="urlBar">clipsave.ai/video-preview</div>
+      </div>
+      <div class="previewVideo">
+        <div class="playCircle">▶</div>
+        <div class="videoLabel">
+          <h3 id="mockupTitle">Video downloader preview</h3>
+          <p id="mockupSub">AI detects platform, quality, duration, and download options.</p>
+        </div>
+      </div>
+      <div class="processing">
+        <div class="processCard"><small id="qualityText">Video Quality</small><div class="bar"><span style="width:92%"></span></div></div>
+        <div class="processCard"><small id="speedText">Download Speed</small><div class="bar"><span style="width:88%"></span></div></div>
+        <div class="processCard"><small id="platformText2">Platform Detected</small><div class="bar"><span style="width:96%"></span></div></div>
+        <div class="processCard"><small id="readyText">File Ready</small><div class="bar"><span style="width:82%"></span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat"><h3 data-target="10000000">0</h3><p id="stat1">Videos Processed</p></div>
+  <div class="stat"><h3 data-target="500000">0</h3><p id="stat2">Creator Users</p></div>
+  <div class="stat"><h3 data-target="999">0</h3><p id="stat3">Fast Processing</p></div>
+  <div class="stat"><h3 data-target="20">0</h3><p id="stat4">Supported Platforms</p></div>
+</section>
+
+<div class="loadingBox" id="loadingBox">
+  <div class="loadingStep"><div class="spinner"></div><span id="load1">Detecting platform...</span></div>
+  <div class="loadingStep"><div class="spinner"></div><span id="load2">Extracting metadata...</span></div>
+  <div class="loadingStep"><div class="spinner"></div><span id="load3">Generating preview...</span></div>
+</div>
+
+<section class="result" id="result">
+  <div class="sectionTitle">
+    <h2 id="resultTitle">Your video is ready</h2>
+    <p id="resultSub">AI detected the platform and prepared download options.</p>
+  </div>
+
+  <div class="videoCard">
+    <div class="thumb">
+      <div class="ready" id="readyBadge">● Ready</div>
+      <div class="bigPlay">▶</div>
+    </div>
+    <div class="info">
+      <h2 id="videoReadyTitle">Video ready to download</h2>
+      <p id="platformText">Platform detected. Your video is ready.</p>
+      <div class="details">
+        <div class="detail"><small id="detailPlatform">Platform</small><b id="platformName">Detecting</b></div>
+        <div class="detail"><small id="detailDuration">Duration</small><b id="durationText">00:45</b></div>
+        <div class="detail"><small id="detailQuality">Quality</small><b>1080P HD</b></div>
+        <div class="detail"><small id="detailSize">File Size</small><b id="sizeText">12.4 MB</b></div>
+      </div>
+      <div class="actions">
+        <button id="downloadBtn" onclick="downloadDemo()">⬇ Download HD</button>
+        <button id="captionBtn" class="secondaryBtn" onclick="captionDemo()">📝 Generate Caption</button>
+        <button id="shortsBtn" class="secondaryBtn" onclick="shortsDemo()">📱 Convert to Shorts</button>
+        <button id="audioBtn" class="secondaryBtn" onclick="audioDemo()">🎵 Extract Audio</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sectionTitle" id="features">
+  <h2 id="featuresTitle">Everything video downloaders need</h2>
+  <p id="featuresSub">Paste a link, detect the platform, and prepare your video.</p>
+</div>
+
+<section class="features">
+  <div class="feature"><div class="icon">⚡</div><h3 id="f1Title">Fast Link Detection</h3><p id="f1Text">Detect video links from popular platforms quickly and cleanly.</p></div>
+  <div class="feature"><div class="icon">⬇️</div><h3 id="f2Title">HD Download Preview</h3><p id="f2Text">Preview video quality, duration, and file size before downloading.</p></div>
+  <div class="feature"><div class="icon">🌍</div><h3 id="f3Title">Multi Language UI</h3><p id="f3Text">Switch the website language between English, Indonesian, and regional languages.</p></div>
+  <div class="feature"><div class="icon">📝</div><h3 id="f4Title">Caption Helper</h3><p id="f4Text">Generate simple captions from your saved videos.</p></div>
+  <div class="feature"><div class="icon">🎵</div><h3 id="f5Title">Audio Extractor</h3><p id="f5Text">Prepare audio extraction for videos you own or have permission to use.</p></div>
+  <div class="feature"><div class="icon">📱</div><h3 id="f6Title">Social Platform Support</h3><p id="f6Text">Supports TikTok, Instagram, X, YouTube, Facebook, and more.</p></div>
+</section>
+
+<div class="extraGrid">
+  <div class="historyBox">
+    <h2>Recent Downloads</h2>
+    <div class="historyItem"><span>🎵 TikTok video</span><b>2 min ago</b></div>
+    <div class="historyItem"><span>📸 Instagram reel</span><b>5 min ago</b></div>
+    <div class="historyItem"><span>𝕏 X video</span><b>8 min ago</b></div>
+    <div class="historyItem"><span>▶ YouTube Shorts</span><b>12 min ago</b></div>
+  </div>
+
+  <div class="testimonial">
+    <div class="stars">★★★★★</div>
+    <p>"The interface feels fast, clean, and simple. Perfect for creator workflow demos."</p>
+    <b>- Alex, Creator</b>
+    <br><br>
+    <div class="stars">★★★★★</div>
+    <p>"The multi-language switcher makes it feel unique and different from normal downloaders."</p>
+    <b>- Maya, Social Media User</b>
+  </div>
+</div>
+
+<section class="cta">
+  <h2 id="ctaTitle">Ready to download your next video?</h2>
+  <p id="ctaSub">Paste your link and let ClipSave AI prepare the video preview instantly.</p>
+  <button id="ctaBtn" onclick="document.getElementById('videoLink').focus()">Start with a link</button>
+</section>
+
+<div class="footer" id="footerText">
+  ClipSave AI is a creator toolkit. Please only save content you own or have permission to use.
+</div>
+</div>
+
+<div class="robot">🤖</div>
+<div class="robotTip">Paste your link, I’ll help analyze it!</div>
+<div class="activity" id="activity">✓ User from Indonesia analyzed a TikTok video</div>
+
+<script>
+let currentLang="en";
+
+const translations={
+en:{navFeatures:"Features",navDemo:"Demo",navBtn:"AI Creator Toolkit",pill:"🚀 AI video downloader for modern creators",heroTitle:'Save, analyze & download <span>social videos</span>',heroSub:"Paste your video link from TikTok, Instagram, X, Facebook, or YouTube. ClipSave AI helps you preview, analyze, and download videos faster.",analyzeBtn:"Analyze Video",tryDemoBtn:"Try Demo Link",viewFeaturesBtn:"View Features",note:"Use only for videos you own or have permission to save.",placeholder:"Paste your video link here...",mockupTitle:"Video downloader preview",mockupSub:"AI detects platform, quality, duration, and download options.",qualityText:"Video Quality",speedText:"Download Speed",platformText2:"Platform Detected",readyText:"File Ready",stat1:"Videos Processed",stat2:"Creator Users",stat3:"Fast Processing",stat4:"Supported Platforms",resultTitle:"Your video is ready",resultSub:"AI detected the platform and prepared download options.",readyBadge:"● Ready",videoReadyTitle:"Video ready to download",detailPlatform:"Platform",detailDuration:"Duration",detailQuality:"Quality",detailSize:"File Size",downloadBtn:"⬇ Download HD",captionBtn:"📝 Generate Caption",shortsBtn:"📱 Convert to Shorts",audioBtn:"🎵 Extract Audio",featuresTitle:"Everything video downloaders need",featuresSub:"Paste a link, detect the platform, and prepare your video.",f1Title:"Fast Link Detection",f1Text:"Detect video links from popular platforms quickly and cleanly.",f2Title:"HD Download Preview",f2Text:"Preview video quality, duration, and file size before downloading.",f3Title:"Multi Language UI",f3Text:"Switch the website language between English, Indonesian, and regional languages.",f4Title:"Caption Helper",f4Text:"Generate simple captions from your saved videos.",f5Title:"Audio Extractor",f5Text:"Prepare audio extraction for videos you own or have permission to use.",f6Title:"Social Platform Support",f6Text:"Supports TikTok, Instagram, X, YouTube, Facebook, and more.",ctaTitle:"Ready to download your next video?",ctaSub:"Paste your link and let ClipSave AI prepare the video preview instantly.",ctaBtn:"Start with a link",footerText:"ClipSave AI is a creator toolkit. Please only save content you own or have permission to use.",detected:"link detected. Your video is ready for download preview.",empty:"Paste video link first.",demoDownload:"Demo MVP: real download feature needs a legal backend/API. This is only the UI preview for now.",captionAlert:"AI Caption:\\n\\nOne video can become many content ideas when you repurpose it the right way."},
+id:{navFeatures:"Fitur",navDemo:"Demo",navBtn:"Toolkit Creator AI",pill:"🚀 Downloader video AI untuk creator modern",heroTitle:'Simpan, analisis & download <span>video sosial</span>',heroSub:"Tempel link video dari TikTok, Instagram, X, Facebook, atau YouTube. ClipSave AI membantu preview, analisis, dan download video lebih cepat.",analyzeBtn:"Analisis Video",tryDemoBtn:"Coba Link Demo",viewFeaturesBtn:"Lihat Fitur",note:"Gunakan hanya untuk video milik sendiri atau yang kamu punya izin untuk simpan.",placeholder:"Tempel link video di sini...",mockupTitle:"Preview downloader video",mockupSub:"AI mendeteksi platform, kualitas, durasi, dan opsi download.",qualityText:"Kualitas Video",speedText:"Kecepatan Download",platformText2:"Platform Terdeteksi",readyText:"File Siap",stat1:"Video Diproses",stat2:"Pengguna Creator",stat3:"Proses Cepat",stat4:"Platform Didukung",resultTitle:"Video kamu sudah siap",resultSub:"AI mendeteksi platform dan menyiapkan opsi download.",readyBadge:"● Siap",videoReadyTitle:"Video siap di-download",detailPlatform:"Platform",detailDuration:"Durasi",detailQuality:"Kualitas",detailSize:"Ukuran File",downloadBtn:"⬇ Download HD",captionBtn:"📝 Buat Caption",shortsBtn:"📱 Ubah ke Shorts",audioBtn:"🎵 Ambil Audio",featuresTitle:"Semua yang dibutuhkan video downloader",featuresSub:"Tempel link, deteksi platform, lalu siapkan videomu.",f1Title:"Deteksi Link Cepat",f1Text:"Deteksi link video dari berbagai platform populer dengan cepat dan rapi.",f2Title:"Preview Download HD",f2Text:"Lihat kualitas video, durasi, dan ukuran file sebelum download.",f3Title:"Tampilan Multi Bahasa",f3Text:"Ubah bahasa website ke Inggris, Indonesia, Jawa, Krama, Sunda, Ngapak, atau Aksara Jawa.",f4Title:"Bantuan Caption",f4Text:"Buat caption sederhana dari video yang kamu simpan.",f5Title:"Ekstrak Audio",f5Text:"Siapkan fitur ambil audio untuk video milik sendiri atau yang punya izin.",f6Title:"Dukungan Platform Sosial",f6Text:"Mendukung TikTok, Instagram, X, YouTube, Facebook, dan lainnya.",ctaTitle:"Siap download video berikutnya?",ctaSub:"Tempel link dan biarkan ClipSave AI menyiapkan preview video secara instan.",ctaBtn:"Mulai dengan link",footerText:"ClipSave AI adalah toolkit creator. Simpan hanya konten milik sendiri atau yang kamu punya izin.",detected:"terdeteksi. Video kamu siap untuk preview download.",empty:"Tempel link video dulu.",demoDownload:"Demo MVP: fitur download asli butuh backend/API legal. Untuk sekarang ini hanya preview tampilan.",captionAlert:"Caption AI:\\n\\nSatu video bisa jadi banyak konten kalau dipakai ulang dengan cara yang tepat."},
+jv:{navFeatures:"Fitur",navDemo:"Demo",navBtn:"Toolkit Creator AI",pill:"🚀 Downloader video AI kanggo creator modern",heroTitle:'Simpen, analisis & download <span>video sosial</span>',heroSub:"Tempel link video saka TikTok, Instagram, X, Facebook, utawa YouTube. ClipSave AI mbantu preview, analisis, lan download video luwih cepet.",analyzeBtn:"Analisis Video",tryDemoBtn:"Coba Link Demo",viewFeaturesBtn:"Delok Fitur",note:"Gunakake mung kanggo video duwekmu dhewe utawa konten sing wis oleh ijin.",placeholder:"Tempel link video ing kene...",mockupTitle:"Preview downloader video",mockupSub:"AI ndeteksi platform, kualitas, durasi, lan pilihan download.",qualityText:"Kualitas Video",speedText:"Cepete Download",platformText2:"Platform Kedeteksi",readyText:"File Siap",stat1:"Video Diproses",stat2:"Pangguna Creator",stat3:"Proses Cepet",stat4:"Platform Didukung",resultTitle:"Videomu wis siap",resultSub:"AI ndeteksi platform lan nyiapake pilihan download.",readyBadge:"● Siap",videoReadyTitle:"Video siap di-download",detailPlatform:"Platform",detailDuration:"Durasi",detailQuality:"Kualitas",detailSize:"Ukuran File",downloadBtn:"⬇ Download HD",captionBtn:"📝 Gawe Caption",shortsBtn:"📱 Ganti dadi Shorts",audioBtn:"🎵 Jupuk Audio",featuresTitle:"Kabeh sing dibutuhake video downloader",featuresSub:"Tempel link, deteksi platform, banjur siapake videomu.",f1Title:"Deteksi Link Cepet",f1Text:"Deteksi link video saka platform populer kanthi cepet lan rapi.",f2Title:"Preview Download HD",f2Text:"Delok kualitas video, durasi, lan ukuran file sadurunge download.",f3Title:"Tampilan Multi Basa",f3Text:"Ganti basa website dadi Inggris, Indonesia, Jawa, Krama, Sunda, Ngapak, utawa Aksara Jawa.",f4Title:"Bantuan Caption",f4Text:"Gawe caption sederhana saka video sing mbok simpen.",f5Title:"Ekstrak Audio",f5Text:"Siapake fitur jupuk audio kanggo video duwekmu dhewe utawa sing oleh ijin.",f6Title:"Dukungan Platform Sosial",f6Text:"Ndhukung TikTok, Instagram, X, YouTube, Facebook, lan liyane.",ctaTitle:"Siap download video sabanjure?",ctaSub:"Tempel link lan ClipSave AI bakal nyiapake preview video kanthi instan.",ctaBtn:"Miwiti nganggo link",footerText:"ClipSave AI iku toolkit creator. Simpen mung konten duwekmu dhewe utawa sing wis oleh ijin.",detected:"kedeteksi. Videomu siap kanggo preview download.",empty:"Tempel link video dhisik.",demoDownload:"Demo MVP: fitur download asli butuh backend/API legal. Saiki mung preview tampilan.",captionAlert:"Caption AI:\\n\\nSiji video bisa dadi akeh konten yen digunakake maneh kanthi cara sing pas."},
+krama:{navFeatures:"Fitur",navDemo:"Demo",navBtn:"Piranti Creator AI",pill:"🚀 Pangunduh video AI kangge creator modern",heroTitle:'Simpen, analisis & undhuh <span>video sosial</span>',heroSub:"Tempelaken tautan video saking TikTok, Instagram, X, Facebook, utawi YouTube. ClipSave AI mbiyantu panjenengan preview, analisis, lan ngundhuh video langkung cepet.",analyzeBtn:"Analisis Video",tryDemoBtn:"Cobi Tautan Demo",viewFeaturesBtn:"Tingali Fitur",note:"Mangga dipunginakaken namung kangge video kagungan panjenengan piyambak utawi konten ingkang sampun pikantuk idin.",placeholder:"Tempelaken tautan video wonten mriki...",mockupTitle:"Preview pangunduh video",mockupSub:"AI ndeteksi platform, kualitas, durasi, lan pilihan undhuhan.",qualityText:"Kualitas Video",speedText:"Kacepetan Undhuh",platformText2:"Platform Kedeteksi",readyText:"File Siyap",stat1:"Video Diproses",stat2:"Panganggo Creator",stat3:"Proses Cepet",stat4:"Platform Didukung",resultTitle:"Video panjenengan sampun siyap",resultSub:"AI ndeteksi platform lan nyiapaken pilihan undhuhan.",readyBadge:"● Siyap",videoReadyTitle:"Video siyap dipunundhuh",detailPlatform:"Platform",detailDuration:"Durasi",detailQuality:"Kualitas",detailSize:"Ukuran File",downloadBtn:"⬇ Undhuh HD",captionBtn:"📝 Damel Caption",shortsBtn:"📱 Dadosaken Shorts",audioBtn:"🎵 Pendhet Audio",featuresTitle:"Sedaya ingkang dipunbetahaken video downloader",featuresSub:"Tempel tautan, deteksi platform, lajeng siyapaken video panjenengan.",f1Title:"Deteksi Tautan Cepet",f1Text:"Deteksi tautan video saking platform populer kanthi cepet lan rapi.",f2Title:"Preview Undhuh HD",f2Text:"Tingali kualitas video, durasi, lan ukuran file sadèrèngipun ngundhuh.",f3Title:"Tampilan Multi Basa",f3Text:"Gantos basa website dados Inggris, Indonesia, Jawa, Krama, Sunda, Ngapak, utawi Aksara Jawa.",f4Title:"Bantuan Caption",f4Text:"Damel caption prasaja saking video ingkang panjenengan simpen.",f5Title:"Ekstrak Audio",f5Text:"Nyawisaken fitur pendhet audio kangge video kagungan panjenengan piyambak utawi ingkang sampun wonten idin.",f6Title:"Dhukungan Platform Sosial",f6Text:"Ndhukung TikTok, Instagram, X, YouTube, Facebook, lan sanesipun.",ctaTitle:"Sampun siyap ngundhuh video salajengipun?",ctaSub:"Tempelaken tautan lan ClipSave AI badhe nyiapaken preview video kanthi instan.",ctaBtn:"Miwiti nganggo tautan",footerText:"ClipSave AI punika toolkit creator. Mangga simpen namung konten kagungan panjenengan piyambak utawi ingkang sampun pikantuk idin.",detected:"kedeteksi. Video panjenengan siyap kangge preview undhuhan.",empty:"Mangga tempelaken tautan video rumiyin.",demoDownload:"Demo MVP: fitur undhuh asli mbutuhake backend/API legal. Sakmenika namung preview tampilan.",captionAlert:"Caption AI:\\n\\nSetunggal video saged dados kathah ide konten menawi dipunginakaken malih kanthi cara ingkang trep."},
+su:{navFeatures:"Fitur",navDemo:"Demo",navBtn:"Toolkit Creator AI",pill:"🚀 Downloader video AI keur creator modern",heroTitle:'Simpen, analisis & download <span>video sosial</span>',heroSub:"Témpélkeun link video ti TikTok, Instagram, X, Facebook, atawa YouTube. ClipSave AI ngabantosan preview, analisis, jeung download video leuwih gancang.",analyzeBtn:"Analisis Video",tryDemoBtn:"Coba Link Demo",viewFeaturesBtn:"Tingali Fitur",note:"Paké ngan keur video milik sorangan atawa konten anu geus meunang idin.",placeholder:"Témpélkeun link video di dieu...",mockupTitle:"Preview downloader video",mockupSub:"AI ngadeteksi platform, kualitas, durasi, jeung pilihan download.",qualityText:"Kualitas Video",speedText:"Laju Download",platformText2:"Platform Kadeteksi",readyText:"File Siap",stat1:"Video Diprosés",stat2:"Pamaké Creator",stat3:"Prosés Gancang",stat4:"Platform Didukung",resultTitle:"Video anjeun geus siap",resultSub:"AI ngadeteksi platform jeung nyiapkeun pilihan download.",readyBadge:"● Siap",videoReadyTitle:"Video siap di-download",detailPlatform:"Platform",detailDuration:"Durasi",detailQuality:"Kualitas",detailSize:"Ukuran File",downloadBtn:"⬇ Download HD",captionBtn:"📝 Jieun Caption",shortsBtn:"📱 Robah jadi Shorts",audioBtn:"🎵 Candak Audio",featuresTitle:"Sadayana anu diperlukeun video downloader",featuresSub:"Témpélkeun link, deteksi platform, tuluy siapkeun videona.",f1Title:"Deteksi Link Gancang",f1Text:"Deteksi link video tina platform populer kalayan gancang jeung rapih.",f2Title:"Preview Download HD",f2Text:"Tingali kualitas video, durasi, jeung ukuran file saméméh download.",f3Title:"Tampilan Multi Basa",f3Text:"Ganti basa website kana Inggris, Indonesia, Jawa, Krama, Sunda, Ngapak, atawa Aksara Jawa.",f4Title:"Bantuan Caption",f4Text:"Jieun caption basajan tina video anu anjeun simpen.",f5Title:"Ekstrak Audio",f5Text:"Siapkeun fitur nyokot audio keur video milik sorangan atawa anu geus meunang idin.",f6Title:"Dukungan Platform Sosial",f6Text:"Ngarojong TikTok, Instagram, X, YouTube, Facebook, jeung sajabana.",ctaTitle:"Siap download video salajengna?",ctaSub:"Témpélkeun link jeung ClipSave AI bakal nyiapkeun preview video sacara instan.",ctaBtn:"Mimitian ku link",footerText:"ClipSave AI nyaéta toolkit creator. Mangga simpen ngan konten milik sorangan atawa anu geus meunang idin.",detected:"kadeteksi. Video anjeun siap pikeun preview download.",empty:"Témpélkeun link video heula.",demoDownload:"Demo MVP: fitur download asli peryogi backend/API legal. Ayeuna ngan preview tampilan.",captionAlert:"Caption AI:\\n\\nHiji video tiasa janten seueur ide konten lamun dipaké deui ku cara anu leres."},
+ngapak:{navFeatures:"Fitur",navDemo:"Demo",navBtn:"Toolkit Creator AI",pill:"🚀 Downloader video AI kanggo creator modern",heroTitle:'Simpen, analisis & download <span>video sosial</span>',heroSub:"Tempel link video sekang TikTok, Instagram, X, Facebook, utawa YouTube. ClipSave AI mbantu ko preview, analisis, lan download video luwih cepet.",analyzeBtn:"Analisis Video",tryDemoBtn:"Coba Link Demo",viewFeaturesBtn:"Deleng Fitur",note:"Gunakna mung kanggo video duwekmu dhewek utawa konten sing wis olih ijin.",placeholder:"Tempel link video ning kene...",mockupTitle:"Preview downloader video",mockupSub:"AI ndeteksi platform, kualitas, durasi, lan pilihan download.",qualityText:"Kualitas Video",speedText:"Cepete Download",platformText2:"Platform Kedeteksi",readyText:"File Wis Siap",stat1:"Video Diproses",stat2:"Pangguna Creator",stat3:"Proses Cepet",stat4:"Platform Didukung",resultTitle:"Videomu wis siap",resultSub:"AI ndeteksi platform lan nyiapna pilihan download.",readyBadge:"● Siap",videoReadyTitle:"Video siap di-download",detailPlatform:"Platform",detailDuration:"Durasi",detailQuality:"Kualitas",detailSize:"Ukuran File",downloadBtn:"⬇ Download HD",captionBtn:"📝 Gawe Caption",shortsBtn:"📱 Ganti dadi Shorts",audioBtn:"🎵 Jupuk Audio",featuresTitle:"Kabeh sing dibutuhna video downloader",featuresSub:"Tempel link, deteksi platform, terus siapna videomu.",f1Title:"Deteksi Link Cepet",f1Text:"Deteksi link video sekang platform populer kanthi cepet lan rapi.",f2Title:"Preview Download HD",f2Text:"Deleng kualitas video, durasi, lan ukuran file sedurunge download.",f3Title:"Tampilan Multi Basa",f3Text:"Ganti basa website dadi Inggris, Indonesia, Jawa, Krama, Sunda, Ngapak, utawa Aksara Jawa.",f4Title:"Bantuan Caption",f4Text:"Gawe caption sederhana sekang video sing mbok simpen.",f5Title:"Ekstrak Audio",f5Text:"Siapna fitur jupuk audio kanggo video duwekmu dhewek utawa sing wis olih ijin.",f6Title:"Dukungan Platform Sosial",f6Text:"Ndhukung TikTok, Instagram, X, YouTube, Facebook, lan liyane.",ctaTitle:"Siap download video sabanjure?",ctaSub:"Tempel link lan ClipSave AI bakal nyiapna preview video kanthi instan.",ctaBtn:"Miwiti nganggo link",footerText:"ClipSave AI iku toolkit creator. Simpen mung konten duwekmu dhewek utawa sing wis olih ijin.",detected:"kedeteksi. Videomu siap kanggo preview download.",empty:"Tempel link video dhisik.",demoDownload:"Demo MVP: fitur download asli butuh backend/API legal. Saiki mung preview tampilan.",captionAlert:"Caption AI:\\n\\nSiji video bisa dadi akeh konten nek digunakna maneh nganggo cara sing pas."},
+aksara:{navFeatures:"ꦥ꦳ꦶꦠꦸꦂ",navDemo:"ꦢꦺꦩꦺꦴ",navBtn:"ꦠꦸꦭ꧀ꦏꦶꦠ꧀ AI",pill:"🚀 ꦢꦺꦴꦮ꧀ꦤ꧀ꦭꦺꦴꦢꦺꦂ ꦮꦶꦢꦶꦪꦺꦴ AI",heroTitle:'ꦱꦶꦩ꧀ꦥꦺꦤ꧀, ꦄꦤꦭꦶꦱꦶꦱ꧀ & ꦢꦺꦴꦮ꧀ꦤ꧀ꦭꦺꦴꦢ꧀ <span>ꦮꦶꦢꦶꦪꦺꦴ</span>',heroSub:"ꦠꦺꦩ꧀ꦥꦺꦭ꧀ ꦭꦶꦁꦏ꧀ ꦮꦶꦢꦶꦪꦺꦴ ꦱꦏ TikTok, Instagram, X, Facebook, YouTube.",analyzeBtn:"ꦄꦤꦭꦶꦱꦶꦱ꧀",tryDemoBtn:"ꦕꦺꦴꦧ Demo",viewFeaturesBtn:"ꦢꦺꦭꦺꦴꦏ꧀ ꦥ꦳ꦶꦠꦸꦂ",note:"ꦒꦸꦤꦏ꧀ꦤ ꦩꦸꦁ ꦏꦁꦒꦺꦴ ꦮꦶꦢꦶꦪꦺꦴ ꦢꦸꦮꦺꦏ꧀ꦩꦸ.",placeholder:"ꦠꦺꦩ꧀ꦥꦺꦭ꧀ ꦭꦶꦁꦏ꧀...",mockupTitle:"ꦥꦿꦺꦮ꦳ꦶꦪꦸ",mockupSub:"AI ꦤ꧀ꦢꦺꦠꦺꦏ꧀ꦱꦶ.",qualityText:"ꦏꦸꦮꦭꦶꦠꦱ꧀",speedText:"ꦕꦺꦥꦺꦠ꧀",platformText2:"ꦥ꧀ꦭꦠ꧀ꦥ꦳ꦺꦴꦂꦩ꧀",readyText:"ꦱꦶꦪꦥ꧀",stat1:"ꦮꦶꦢꦶꦪꦺꦴ",stat2:"ꦏꦿꦶꦪꦺꦠꦺꦴꦂ",stat3:"ꦕꦺꦥꦺꦠ꧀",stat4:"ꦥ꧀ꦭꦠ꧀ꦥ꦳ꦺꦴꦂꦩ꧀",resultTitle:"ꦱꦶꦪꦥ꧀",resultSub:"AI ꦤ꧀ꦢꦺꦠꦺꦏ꧀ꦱꦶ.",readyBadge:"● ꦱꦶꦪꦥ꧀",videoReadyTitle:"ꦮꦶꦢꦶꦪꦺꦴ ꦱꦶꦪꦥ꧀",detailPlatform:"ꦥ꧀ꦭꦠ꧀ꦥ꦳ꦺꦴꦂꦩ꧀",detailDuration:"ꦢꦸꦫꦱꦶ",detailQuality:"ꦏꦸꦮꦭꦶꦠꦱ꧀",detailSize:"ꦈꦏꦸꦫꦤ꧀",downloadBtn:"⬇ HD",captionBtn:"📝 ꦏꦥ꧀ꦱꦾꦺꦤ꧀",shortsBtn:"📱 Shorts",audioBtn:"🎵 Audio",featuresTitle:"ꦥ꦳ꦶꦠꦸꦂ",featuresSub:"ꦠꦺꦩ꧀ꦥꦺꦭ꧀ ꦭꦶꦁꦏ꧀.",f1Title:"ꦭꦶꦁꦏ꧀",f1Text:"ꦢꦺꦠꦺꦏ꧀ꦱꦶ ꦭꦶꦁꦏ꧀.",f2Title:"HD",f2Text:"ꦥꦿꦺꦮ꦳ꦶꦪꦸ HD.",f3Title:"ꦧꦱ",f3Text:"ꦩꦸꦭ꧀ꦠꦶ ꦧꦱ.",f4Title:"ꦏꦥ꧀ꦱꦾꦺꦤ꧀",f4Text:"ꦒꦮꦺ ꦏꦥ꧀ꦱꦾꦺꦤ꧀.",f5Title:"Audio",f5Text:"ꦗꦸꦥꦸꦏ꧀ Audio.",f6Title:"Platform",f6Text:"TikTok, Instagram, YouTube.",ctaTitle:"ꦱꦶꦪꦥ꧀?",ctaSub:"ꦠꦺꦩ꧀ꦥꦺꦭ꧀ ꦭꦶꦁꦏ꧀.",ctaBtn:"ꦩꦶꦮꦶꦠꦶ",footerText:"ClipSave AI ꦠꦸꦭ꧀ꦏꦶꦠ꧀.",detected:"ꦏꦺꦢꦺꦠꦺꦏ꧀ꦱꦶ.",empty:"ꦠꦺꦩ꧀ꦥꦺꦭ꧀ ꦭꦶꦁꦏ꧀.",demoDownload:"Demo MVP: butuh backend/API legal.",captionAlert:"Caption AI:\\n\\nꦱꦶꦗꦶ ꦮꦶꦢꦶꦪꦺꦴ ꦧꦶꦱ ꦢꦢꦶ ꦄꦏꦺꦃ ꦏꦺꦴꦤ꧀ꦠꦺꦤ꧀."}
+};
+
+function changeLanguage(lang){
+  currentLang=lang;
+  const t=translations[lang];
+  for(const key in t){
+    const el=document.getElementById(key);
+    if(el){
+      if(key==="heroTitle") el.innerHTML=t[key];
+      else el.innerText=t[key];
+    }
+  }
+  document.getElementById("videoLink").placeholder=t.placeholder;
+  document.documentElement.lang=lang;
+}
+
+function analyzeVideo(){
+  const link=document.getElementById("videoLink").value.trim();
+  const t=translations[currentLang];
+  if(!link){alert(t.empty);return}
+
+  const loading=document.getElementById("loadingBox");
+  const result=document.getElementById("result");
+  result.style.display="none";
+  loading.style.display="block";
+  loading.scrollIntoView({behavior:"smooth",block:"center"});
+
+  setTimeout(()=>{
+    let platform="Unknown Platform";
+    if(link.includes("tiktok.com")) platform="TikTok";
+    else if(link.includes("instagram.com")) platform="Instagram";
+    else if(link.includes("x.com")||link.includes("twitter.com")) platform="X / Twitter";
+    else if(link.includes("youtube.com")||link.includes("youtu.be")) platform="YouTube Shorts";
+    else if(link.includes("facebook.com")||link.includes("fb.watch")) platform="Facebook";
+    else if(link.includes("pinterest.com")) platform="Pinterest";
+
+    const durations=["00:27","00:35","00:45","01:12","00:58"];
+    const sizes=["8.2 MB","12.4 MB","16.9 MB","21.1 MB","9.8 MB"];
+
+    document.getElementById("durationText").innerText=durations[Math.floor(Math.random()*durations.length)];
+    document.getElementById("sizeText").innerText=sizes[Math.floor(Math.random()*sizes.length)];
+    document.getElementById("platformName").innerText=platform;
+    document.getElementById("platformText").innerText=platform+" "+t.detected;
+
+    loading.style.display="none";
+    result.style.display="block";
+    result.scrollIntoView({behavior:"smooth",block:"center"});
+  },2200);
+}
+
+function tryDemo(){
+  document.getElementById("videoLink").value="https://www.tiktok.com/@creator/video/123456789";
+  analyzeVideo();
+}
+function scrollToFeatures(){document.getElementById("features").scrollIntoView({behavior:"smooth"})}
+function captionDemo(){alert(translations[currentLang].captionAlert)}
+function downloadDemo(){alert(translations[currentLang].demoDownload)}
+function shortsDemo(){alert("Demo MVP: Convert to Shorts feature coming soon.")}
+function audioDemo(){alert("Demo MVP: Audio Extractor feature coming soon.")}
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  document.querySelector(".themeBtn").innerText=document.body.classList.contains("light")?"☀️":"🌙";
+}
+
+function animateCounters(){
+  document.querySelectorAll(".stat h3").forEach(el=>{
+    const target=+el.dataset.target;
+    let current=0;
+    const step=Math.ceil(target/80);
+    const timer=setInterval(()=>{
+      current+=step;
+      if(current>=target){current=target;clearInterval(timer)}
+      if(target===999) el.innerText="99.9%";
+      else if(target>=1000000) el.innerText=Math.floor(current/1000000)+"M+";
+      else if(target>=1000) el.innerText=Math.floor(current/1000)+"K+";
+      else el.innerText=current+"+";
+    },22);
+  });
+}
+
+const activities=[
+  "✓ User from Indonesia analyzed a TikTok video",
+  "✓ User from Singapore previewed an Instagram Reel",
+  "✓ User from Japan generated a caption",
+  "✓ User from USA analyzed a YouTube Short",
+  "✓ User from Bandung switched language to Sunda"
+];
+
+function showActivity(){
+  const box=document.getElementById("activity");
+  box.innerText=activities[Math.floor(Math.random()*activities.length)];
+  box.classList.add("show");
+  setTimeout(()=>box.classList.remove("show"),3500);
+}
+
+animateCounters();
+setInterval(showActivity,6000);
+setTimeout(showActivity,2000);
+changeLanguage("en");
+</script>
+</body>
+</html>
